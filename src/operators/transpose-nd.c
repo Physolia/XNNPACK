@@ -46,15 +46,6 @@ static enum xnn_status create_transpose_nd(
     goto error;
   }
 
-  status = xnn_status_unsupported_hardware;
-
-  if ((xnn_params.init_flags & datatype_init_flags) != datatype_init_flags) {
-    xnn_log_error(
-      "failed to create %s operator: operations on data type are not supported",
-      xnn_operator_type_to_string(operator_type));
-    goto error;
-  }
-
   status = xnn_status_out_of_memory;
 
   transpose_op = xnn_allocate_zero_simd_memory(sizeof(struct xnn_operator));
@@ -263,6 +254,14 @@ enum xnn_status xnn_create_transpose_nd_x32(
   uint32_t flags,
   xnn_operator_t* transpose_op_out)
 {
+
+  if ((xnn_params.init_flags & XNN_INIT_FLAG_X32) != XNN_INIT_FLAG_X32) {
+    xnn_log_error(
+      "failed to create %s operator: operations on data type are not supported",
+      xnn_operator_type_to_string(xnn_operator_type_transpose_nd_x32));
+    return xnn_status_unsupported_hardware;
+  }
+
   return create_transpose_nd(
     flags,
     xnn_operator_type_transpose_nd_x32,
@@ -273,6 +272,13 @@ enum xnn_status xnn_create_transpose_nd_x16(
   uint32_t flags,
   xnn_operator_t* transpose_op_out)
 {
+  if ((xnn_params.init_flags & XNN_INIT_FLAG_X16) != XNN_INIT_FLAG_X16) {
+    xnn_log_error(
+      "failed to create %s operator: operations on data type are not supported",
+      xnn_operator_type_to_string(xnn_operator_type_transpose_nd_x16));
+    return xnn_status_unsupported_hardware;
+  }
+
   return create_transpose_nd(
     flags,
     xnn_operator_type_transpose_nd_x16,
@@ -283,6 +289,13 @@ enum xnn_status xnn_create_transpose_nd_x8(
   uint32_t flags,
   xnn_operator_t* transpose_op_out)
 {
+  if ((xnn_params.init_flags & XNN_INIT_FLAG_X8) != XNN_INIT_FLAG_X8) {
+    xnn_log_error(
+      "failed to create %s operator: operations on data type are not supported",
+      xnn_operator_type_to_string(xnn_operator_type_transpose_nd_x8));
+    return xnn_status_unsupported_hardware;
+  }
+
   return create_transpose_nd(
     flags,
     xnn_operator_type_transpose_nd_x8,
